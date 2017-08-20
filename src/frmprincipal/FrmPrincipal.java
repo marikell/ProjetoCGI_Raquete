@@ -28,6 +28,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
     
     private boolean SetaEsquerda;
     private boolean SetaDireita;
+    private boolean Start;
+   private java.util.ArrayList<Bola> Bolas = new ArrayList<Bola>();
+
     private int QuantidadeBolas = 3;
     
     public FrmPrincipal() {
@@ -73,6 +76,14 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            if(!Start){
+            Initialize();
+            Start = true;
+            }
+            
+        }
+        
          if(evt.getKeyCode() == KeyEvent.VK_LEFT)
         {
             SetaEsquerda = true;
@@ -88,6 +99,9 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
         if(evt.getKeyCode() == KeyEvent.VK_LEFT)
         {
             SetaEsquerda = false;
+        }
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            Start = true;
         }
         else if(evt.getKeyCode() == KeyEvent.VK_RIGHT)
             {
@@ -136,12 +150,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
         Random LRandom = new Random();
         return new Color(LRandom.nextInt(255),LRandom.nextInt(255),LRandom.nextInt(255));
     }
-
-    @Override
-    public void run() {
-        
-        java.util.ArrayList<Bola> Bolas = new ArrayList<Bola>();
-        
+    
+    public void Initialize(){
         for(int i =0; i<3;i++){
             Random Random = new Random();
             int PosBolaX = Random.nextInt(getWidth()-30);
@@ -150,14 +160,24 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             Color Color = GenerateColor();
             Bolas.add(new Bola(PosBolaX, PosBolaY,Boolean,30,30));
         }
+    }
+
+    @Override
+    public void run() {
+        
+        Start = true;
+        
+        Initialize();
         int XPlayer,YPlayer,IncrementaX=1, IncrementaY=1;
         XPlayer = getWidth()/2-40;
         YPlayer = getHeight()-80;
         while(true){
-            QuantidadeBolas = Bolas.size();
             java.awt.Graphics g = getBufferStrategy().
             getDrawGraphics();
           
+            if(Start){
+             QuantidadeBolas = Bolas.size();
+            
            g.setColor(Color.WHITE);
             g.fillRect(0,0,getWidth(),getHeight());            
            Player Player = new Player(XPlayer, YPlayer,true, 15,80);
@@ -180,14 +200,11 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
                 if(SetaDireita)
                     IncrementaX=-1;
             }
-            
             for(int i = 0; i< Bolas.size();i++){
                 Bola Bola = Bolas.get(i);
                 Bola.desenhar(g);
                 Bola.mover(getWidth(),getHeight(), XPlayer, YPlayer, Player.getWidth(), Player.getHeight(), Bolas);
             }
-                
-                
             try {
                 Thread.sleep(4);
             } catch (InterruptedException ex) {
@@ -197,10 +214,22 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             g.setColor(Color.black);
             g.drawString("Bolas: " + Integer.toString(QuantidadeBolas), getWidth()-400, getHeight()-275);
             
+            if(Bolas.size() == 0)
+                Start = false;
+            
             g.dispose();
             getBufferStrategy().show();
+            }
+            else{
+                 g.setColor(Color.WHITE);
+            g.fillRect(0,0,getWidth(),getHeight());
+g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+            g.setColor(Color.black);
+            g.drawString("Pressione enter para jogar novamente!", getWidth()/2-180, getHeight()/2+50); 
+            g.dispose();
+            getBufferStrategy().show();
+            }
         }
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
