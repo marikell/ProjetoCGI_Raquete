@@ -42,10 +42,7 @@ public class Base {
         
     }
     
-    public void mover(int w, int h)
-    {
-        
-    }
+
 
     public int getWidth() {
         return Width;

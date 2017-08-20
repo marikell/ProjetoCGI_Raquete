@@ -8,6 +8,7 @@ package frmprincipal;
 import classes.Bola;
 import classes.Player;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -140,6 +141,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
     public void run() {
         
         java.util.ArrayList<Bola> Bolas = new ArrayList<Bola>();
+        
         for(int i =0; i<3;i++){
             Random Random = new Random();
             int PosBolaX = Random.nextInt(getWidth()-30);
@@ -148,20 +150,16 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             Color Color = GenerateColor();
             Bolas.add(new Bola(PosBolaX, PosBolaY,Boolean,30,30));
         }
-        
-        
         int XPlayer,YPlayer,IncrementaX=1, IncrementaY=1;
-        
         XPlayer = getWidth()/2-40;
         YPlayer = getHeight()-80;
-        
-       
         while(true){
+            QuantidadeBolas = Bolas.size();
             java.awt.Graphics g = getBufferStrategy().
             getDrawGraphics();
-         
+          
            g.setColor(Color.WHITE);
-            g.fillRect(0,0,getWidth(),getHeight());
+            g.fillRect(0,0,getWidth(),getHeight());            
            Player Player = new Player(XPlayer, YPlayer,true, 15,80);
             g.setColor(GenerateColor());
             Player.desenhar(g);            
@@ -177,8 +175,6 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             if(XPlayer<5){
                 if(SetaEsquerda)
                     IncrementaX=1;
-                
-                    
             }
             else if(XPlayer > getHeight()-5){
                 if(SetaDireita)
@@ -188,7 +184,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             for(int i = 0; i< Bolas.size();i++){
                 Bola Bola = Bolas.get(i);
                 Bola.desenhar(g);
-                Bola.mover(getWidth(),getHeight());
+                Bola.mover(getWidth(),getHeight(), XPlayer, YPlayer, Player.getWidth(), Player.getHeight(), Bolas);
             }
                 
                 
@@ -197,6 +193,10 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             } catch (InterruptedException ex) {
                
             }
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+            g.setColor(Color.black);
+            g.drawString("Bolas: " + Integer.toString(QuantidadeBolas), getWidth()-400, getHeight()-275);
+            
             g.dispose();
             getBufferStrategy().show();
         }
