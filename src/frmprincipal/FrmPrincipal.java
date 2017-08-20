@@ -5,18 +5,27 @@
  */
 package frmprincipal;
 
+import classes.Player;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Random;
+
 /**
  *
  * @author Marianne
  */
-public class FrmPrincipal extends javax.swing.JFrame {
+public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
 
     /**
      * Creates new form FrmPrincipal
      */
     public FrmPrincipal() {
         initComponents();
+        createBufferStrategy(2);           
+        Thread t = new Thread(this);
+        t.start();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,6 +85,27 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 new FrmPrincipal().setVisible(true);
             }
         });
+    }
+    public static Color GenerateColor(){
+        
+        Random LRandom = new Random();
+        return new Color(LRandom.nextInt(255),LRandom.nextInt(255),LRandom.nextInt(255));
+    }
+
+    @Override
+    public void run() {
+        
+        while(true){
+            java.awt.Graphics Graphics = getBufferStrategy().
+            getDrawGraphics();
+            
+            Player Player = new Player(getWidth()/2-40, getHeight()-80,true, 15,80);
+            //Graphics.setColor(GenerateColor());
+            Player.desenhar(Graphics);
+            Graphics.dispose();
+            getBufferStrategy().show();
+        }
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
