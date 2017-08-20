@@ -24,6 +24,6 @@ public class Player extends Base{
     @Override
     public void desenhar(Graphics g){        
         
-        g.fillRect(PosX, PosY, Width, Height);
+    g.fillRect(PosX, PosY, Width, Height);
     }
 }

@@ -44,23 +44,7 @@ public class Base {
     
     public void mover(int w, int h)
     {
-        if(PosX == w-30)
-            AuxX=false;
-        if(PosX == 0)
-            AuxX=true;
-        if(PosY == h-30)
-            AuxY=false;
-        if(PosY == 25)
-            AuxY=true;
-
-        if(AuxX==true)
-            PosX++;
-        else
-            PosX--;
-        if(AuxY==true)
-            PosY++;
-        else
-            PosY--;
+        
     }
 
     public int getWidth() {

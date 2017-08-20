@@ -8,6 +8,8 @@ package frmprincipal;
 import classes.Player;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -19,6 +21,10 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
     /**
      * Creates new form FrmPrincipal
      */
+    
+    private boolean SetaEsquerda;
+    private boolean SetaDireita;
+    
     public FrmPrincipal() {
         initComponents();
         createBufferStrategy(2);           
@@ -37,6 +43,14 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -51,6 +65,30 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+         if(evt.getKeyCode() == KeyEvent.VK_LEFT)
+        {
+            SetaEsquerda = true;
+        }
+        else if(evt.getKeyCode() == KeyEvent.VK_RIGHT)
+            {
+            SetaDireita = true;
+        }
+    }//GEN-LAST:event_formKeyPressed
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_LEFT)
+        {
+            SetaEsquerda = false;
+        }
+        else if(evt.getKeyCode() == KeyEvent.VK_RIGHT)
+            {
+            SetaDireita = false;
+        }
+    }//GEN-LAST:event_formKeyReleased
 
     /**
      * @param args the command line arguments
@@ -86,6 +124,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             }
         });
     }
+    
+
     public static Color GenerateColor(){
         
         Random LRandom = new Random();
@@ -95,14 +135,52 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
     @Override
     public void run() {
         
+        int x,y,IncrementaX=1, IncrementaY=1;
+        boolean Block = false;
+        
+        x = getWidth()/2-40;
+        y = getHeight()-80;
+        
         while(true){
-            java.awt.Graphics Graphics = getBufferStrategy().
+            Graphics g = getBufferStrategy().
             getDrawGraphics();
-            
-            Player Player = new Player(getWidth()/2-40, getHeight()-80,true, 15,80);
+                        
+           g.setColor(Color.WHITE);
+            g.fillRect(0,0,getWidth(),getHeight());
+           Player Player = new Player(x, y,true, 15,80);
             //Graphics.setColor(GenerateColor());
-            Player.desenhar(Graphics);
-            Graphics.dispose();
+            g.setColor(Color.BLACK);
+            //g.fillOval(x,y,15,15);
+            Player.desenhar(g);            
+            x = x + IncrementaX; 
+            if(SetaDireita)
+                IncrementaX = 1;
+            else
+                if(SetaEsquerda)
+                    IncrementaX = -1;
+                else
+                    IncrementaX = 0;
+            
+            if(x<5){
+                if(SetaEsquerda)
+                    IncrementaX=1;
+                
+                    
+            }
+            else if(x > getHeight()-5){
+                if(SetaDireita)
+                    IncrementaX=-1;
+            }
+            
+            
+                
+                
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
+               
+            }
+            g.dispose();
             getBufferStrategy().show();
         }
         
