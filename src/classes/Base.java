@@ -42,6 +42,10 @@ public class Base {
         
     }
     
+    public static Color GenerateColor(){        
+        Random Random = new Random();
+        return new Color(Random.nextInt(255),Random.nextInt(255),Random.nextInt(255));
+    }
 
 
     public int getWidth() {

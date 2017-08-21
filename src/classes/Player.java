@@ -19,11 +19,12 @@ public class Player extends Base{
     public Player(int PosX, int PosY, boolean AAux, int Height, int Width){
     
         super(PosX, PosY, AAux, Height, Width);
+        this.Color = GenerateColor();
     
     }
     @Override
     public void desenhar(Graphics g){        
-        
+    g.setColor(this.Color);
     g.fillRect(PosX, PosY, Width, Height);
     }
 }

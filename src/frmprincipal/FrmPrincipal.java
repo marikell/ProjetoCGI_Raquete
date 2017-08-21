@@ -28,18 +28,17 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
     
     private boolean SetaEsquerda;
     private boolean SetaDireita;
-    private boolean Start;
-   private java.util.ArrayList<Bola> Bolas = new ArrayList<Bola>();
-
-    private int QuantidadeBolas = 3;
+    private boolean Start = true;
+    private java.util.ArrayList<Bola> Bolas = new ArrayList<Bola>();
+    private int QuantidadeBolas;
     
     public FrmPrincipal() {
         initComponents();
+        //Criação do buffer e da thread
         createBufferStrategy(2);           
         Thread t = new Thread(this);
         t.start();
-    }
-    
+    }   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,37 +75,28 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){            
             if(!Start){
             Initialize();
             Start = true;
-            }
-            
+            }            
         }
-        
-         if(evt.getKeyCode() == KeyEvent.VK_LEFT)
-        {
+         if(evt.getKeyCode() == KeyEvent.VK_LEFT)      
             SetaEsquerda = true;
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_RIGHT)
-            {
-            SetaDireita = true;
-        }
+       
+        else if(evt.getKeyCode() == KeyEvent.VK_RIGHT)        
+            SetaDireita = true;      
     }//GEN-LAST:event_formKeyPressed
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_LEFT)
-        {
-            SetaEsquerda = false;
-        }
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            Start = true;
-        }
-        else if(evt.getKeyCode() == KeyEvent.VK_RIGHT)
-            {
+        if(evt.getKeyCode() == KeyEvent.VK_LEFT)       
+            SetaEsquerda = false;        
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)            
+            Start = true;        
+        else if(evt.getKeyCode() == KeyEvent.VK_RIGHT)            
             SetaDireita = false;
-        }
+        
     }//GEN-LAST:event_formKeyReleased
 
     /**
@@ -144,46 +134,52 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
         });
     }
     
-
-    public static Color GenerateColor(){
-        
-        Random LRandom = new Random();
-        return new Color(LRandom.nextInt(255),LRandom.nextInt(255),LRandom.nextInt(255));
+    //Gera as Cores
+    public static Color GenerateColor(){        
+        Random Random = new Random();
+        return new Color(Random.nextInt(255),Random.nextInt(255),Random.nextInt(255));
     }
-    
+    //Gera as Bolas
     public void Initialize(){
         for(int i =0; i<3;i++){
             Random Random = new Random();
             int PosBolaX = Random.nextInt(getWidth()-30);
             int PosBolaY = Random.nextInt(getHeight()-30);
             boolean Boolean = Random.nextBoolean();
-            Color Color = GenerateColor();
-            Bolas.add(new Bola(PosBolaX, PosBolaY,Boolean,30,30));
-        }
+            Bolas.add(new Bola(PosBolaX, PosBolaY,Boolean,30,30));        }
     }
 
     @Override
-    public void run() {
+    public void run() {      
         
-        Start = true;
-        
-        Initialize();
         int XPlayer,YPlayer,IncrementaX=1, IncrementaY=1;
+        //Variáveis que posicionam o Player no quadro.
         XPlayer = getWidth()/2-40;
         YPlayer = getHeight()-80;
-        while(true){
+         Player Player = new Player(XPlayer, YPlayer,true, 15,80);
+        Initialize();
+        while(true){            
+            //Inicializando o Graphics através do buffer.
             java.awt.Graphics g = getBufferStrategy().
             getDrawGraphics();
-          
+            //Start = true, significa que o jogo pode rodar.
             if(Start){
+             //Inicializando a variável de contagem de bolas
              QuantidadeBolas = Bolas.size();
-            
+           //Criação do retãngulo maior para servir de "quadro"
            g.setColor(Color.WHITE);
-            g.fillRect(0,0,getWidth(),getHeight());            
-           Player Player = new Player(XPlayer, YPlayer,true, 15,80);
-            g.setColor(GenerateColor());
-            Player.desenhar(g);            
-            XPlayer = XPlayer + IncrementaX; 
+           g.fillRect(0,0,getWidth(),getHeight()); 
+           //Criação da Raquete (Player)
+           
+            Player.setPosX(XPlayer);
+            Player.setPosY(YPlayer);
+            
+            //g.setColor(Color.MAGENTA);
+            //Desenhando a raquete na tela
+            Player.desenhar(g);
+            //Operações para o deslocamento do Player na Tela.
+            XPlayer = XPlayer + IncrementaX;
+            
             if(SetaDireita)
                 IncrementaX = 1;
             else
@@ -191,7 +187,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
                     IncrementaX = -1;
                 else
                     IncrementaX = 0;
-            
+            //Caso o Player tente ir para a esquerda do limite estipulado
             if(XPlayer<5){
                 if(SetaEsquerda)
                     IncrementaX=1;
@@ -200,6 +196,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
                 if(SetaDireita)
                     IncrementaX=-1;
             }
+            //Desenhando as bolas em posições aleatórias na tela
             for(int i = 0; i< Bolas.size();i++){
                 Bola Bola = Bolas.get(i);
                 Bola.desenhar(g);
@@ -210,22 +207,28 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             } catch (InterruptedException ex) {
                
             }
-            g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
-            g.setColor(Color.black);
-            g.drawString("Bolas: " + Integer.toString(QuantidadeBolas), getWidth()-400, getHeight()-275);
             
+            //Escrevendo o Texto "Bolas:"
+            g.setFont(new Font("Helvetica Neue", Font.BOLD, 14)); 
+            g.setColor(Color.black);
+            g.drawString("BOLAS: " + Integer.toString(QuantidadeBolas), getWidth()-400, getHeight()-275);
+            
+            //Se a Quantidade de bolas for zero, devemos reiniciar a aplicação.
             if(Bolas.size() == 0)
                 Start = false;
             
             g.dispose();
             getBufferStrategy().show();
             }
+            
+            //Start = false, portanto o jogo não poderá rodar, mostrando a tela de jogar novamente.
             else{
-                 g.setColor(Color.WHITE);
+            g.setColor(Color.ORANGE);
             g.fillRect(0,0,getWidth(),getHeight());
-g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+            g.setFont(new Font("Helvetica Neue", Font.BOLD, 14)); 
             g.setColor(Color.black);
-            g.drawString("Pressione enter para jogar novamente!", getWidth()/2-180, getHeight()/2+50); 
+            g.drawString("PRESSIONE ENTER PARA JOGAR NOVAMENTE!", getWidth()/2-160, getHeight()/2);
+            g.fillRect( getWidth()/2-160, getHeight()/2 + 5, 320, 3);
             g.dispose();
             getBufferStrategy().show();
             }

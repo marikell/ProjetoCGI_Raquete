@@ -7,6 +7,7 @@ package classes;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  *
@@ -17,12 +18,13 @@ public class Bola extends Base{
     public Bola(int PosX, int PosY, boolean AAux, int Height, int Width){
     
         super(PosX, PosY, AAux, Height, Width);
+        this.Color = GenerateColor();
     
     }
     
     @Override
     public void desenhar(Graphics g){
-        
+        g.setColor(this.Color);
         g.fillOval(PosX, PosY, Width, Height);
     }
     public void mover(int w, int h, int PlayerX, int PlayerY, int PlayerWidth, int PlayerHeight, ArrayList<Bola> Bolas){
