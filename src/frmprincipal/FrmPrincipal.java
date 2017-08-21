@@ -149,8 +149,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
     
     //Gera as Bolas
     public void Initialize(){
-        for(int i =0; i<3;i++){
-            Random Random = new Random();
+         Random Random = new Random();
+        for(int i =0; i<3;i++){           
             int PosBolaX = Random.nextInt(getWidth()-30);
             int PosBolaY = Random.nextInt(getHeight()-30);
             boolean Boolean = Random.nextBoolean();
@@ -161,8 +161,7 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
     }
 
     @Override
-    public void run() {      
-        
+    public void run() {     
         int XPlayer,YPlayer,IncrementaX=1, IncrementaY=1;
         //Variáveis que posicionam o Player no quadro.
         XPlayer = getWidth()/2-40;

@@ -16,20 +16,14 @@ import java.util.Random;
  */
 public class Base {
     int PosX,PosY, Width, Height;
-    Color Color;
-    
-    public Base()
-    {
-        
-    }  
+    Color Color;   
     public Base(int PosX, int PosY, int Height, int Width)
     {
         this.PosX = PosX;
         this.PosY = PosY;
         this.Height = Height;
         this.Width = Width;
-    }
-    
+    }    
     public void desenhar(Graphics g)
     {
         
@@ -37,41 +31,32 @@ public class Base {
     public int getWidth() {
         return Width;
     }
-
     public void setWidth(int Width) {
         this.Width = Width;
     }
-    
      public int getHeight() {
         return Height;
-    }
-
-    public void setHeight(int Height) {
+    }    
+     public void setHeight(int Height) {
         this.Height = Height;
     }
-    
     public int getPosX() {
         return PosX;
     }
-
     public void setPosX(int PosX) {
         this.PosX = PosX;
     }
-
     public int getPosY() {
         return PosY;
     }
-
     public void setPosY(int PosY) {
         this.PosY = PosY;
     }
        public Color getColor() {
         return Color;
     }
-
     public void setColor(Color Color) {
         this.Color = Color;
     }
 
-   
 }
