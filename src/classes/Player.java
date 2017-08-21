@@ -5,22 +5,18 @@
  */
 package classes;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
  *
  * @author Marianne
  */
-
-
-
 public class Player extends Base{
     
-    public Player(int PosX, int PosY, boolean AAux, int Height, int Width){
+    public Player(int PosX, int PosY, int Height, int Width){
     
-        super(PosX, PosY, AAux, Height, Width);
-        this.Color = GenerateColor();
-    
+        super(PosX, PosY, Height, Width);
     }
     @Override
     public void desenhar(Graphics g){        

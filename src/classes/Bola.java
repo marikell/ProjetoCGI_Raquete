@@ -7,19 +7,41 @@ package classes;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  *
  * @author Marianne
  */
 public class Bola extends Base{
-    
+    private boolean AuxX;
+    private boolean AuxY;
     public Bola(int PosX, int PosY, boolean AAux, int Height, int Width){
     
-        super(PosX, PosY, AAux, Height, Width);
-        this.Color = GenerateColor();
+        super(PosX, PosY,Height, Width);
+        AuxX = AAux;
+       
     
+    }
+    
+     public boolean getAuxX() {
+        return AuxX;
+    }
+
+    public void setAuxX(boolean AuxX) {
+        this.AuxX = AuxX;
+    }
+    
+    public Bola(){
+        this.AuxX = true;
+        this.AuxY = true;
+    }
+    
+     public boolean getAuxY() {
+        return AuxY;
+    }
+
+    public void setAuxY(boolean AuxY) {
+        this.AuxY = AuxY;
     }
     
     @Override
@@ -29,7 +51,7 @@ public class Bola extends Base{
     }
     public void mover(int w, int h, int PlayerX, int PlayerY, int PlayerWidth, int PlayerHeight, ArrayList<Bola> Bolas){
         
-        if((PosX>=(PlayerX-Width) && PosX<=(PlayerX + Width)) && (PosY>= (PlayerY - Height) && PosY <= (PlayerY + Height))){
+        if((PosX>(PlayerX-5) && PosX<(PlayerX + Width)) && (PosY>(PlayerY - Height) && PosY <(PlayerY))){
             AuxY = false;
         }
         else{

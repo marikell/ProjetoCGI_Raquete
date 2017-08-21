@@ -7,6 +7,7 @@ package classes;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -15,24 +16,16 @@ import java.util.Random;
  */
 public class Base {
     int PosX,PosY, Width, Height;
-    boolean AuxX;
-    boolean AuxY;
     Color Color;
     
     public Base()
     {
-        this.AuxX = true;
-        this.AuxY = true;
+        
     }  
-    
-    
-    
-    public Base(int PosX, int PosY, boolean AAux, int Height, int Width)
+    public Base(int PosX, int PosY, int Height, int Width)
     {
         this.PosX = PosX;
         this.PosY = PosY;
-        this.AuxX = AAux;
-        this.AuxY = AAux;
         this.Height = Height;
         this.Width = Width;
     }
@@ -41,13 +34,6 @@ public class Base {
     {
         
     }
-    
-    public static Color GenerateColor(){        
-        Random Random = new Random();
-        return new Color(Random.nextInt(255),Random.nextInt(255),Random.nextInt(255));
-    }
-
-
     public int getWidth() {
         return Width;
     }
@@ -79,20 +65,13 @@ public class Base {
     public void setPosY(int PosY) {
         this.PosY = PosY;
     }
-
-    public boolean getAuxX() {
-        return AuxX;
+       public Color getColor() {
+        return Color;
     }
 
-    public void setAuxX(boolean AuxX) {
-        this.AuxX = AuxX;
+    public void setColor(Color Color) {
+        this.Color = Color;
     }
 
-    public boolean getAuxY() {
-        return AuxY;
-    }
-
-    public void setAuxY(boolean AuxY) {
-        this.AuxY = AuxY;
-    }
+   
 }

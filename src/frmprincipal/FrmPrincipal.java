@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import javax.swing.JLabel;
@@ -134,11 +135,18 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
         });
     }
     
-    //Gera as Cores
-    public static Color GenerateColor(){        
-        Random Random = new Random();
-        return new Color(Random.nextInt(255),Random.nextInt(255),Random.nextInt(255));
+    public Color GenerateColor(int i){
+        
+        ArrayList<Color> Colors =new ArrayList<Color>() {{
+        add(new Color(207,55,33));
+        add(new Color(49,169,184));
+        add(new Color(245,235,65));
+        add(new Color(37,128,57));
+        
+        }};
+        return Colors.get(i);
     }
+    
     //Gera as Bolas
     public void Initialize(){
         for(int i =0; i<3;i++){
@@ -146,7 +154,10 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             int PosBolaX = Random.nextInt(getWidth()-30);
             int PosBolaY = Random.nextInt(getHeight()-30);
             boolean Boolean = Random.nextBoolean();
-            Bolas.add(new Bola(PosBolaX, PosBolaY,Boolean,30,30));        }
+            Bola Bola = new Bola(PosBolaX, PosBolaY,Boolean,30,30);
+            Bola.setColor(GenerateColor(i));            
+            Bolas.add(Bola);        
+        }
     }
 
     @Override
@@ -156,7 +167,8 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
         //Variáveis que posicionam o Player no quadro.
         XPlayer = getWidth()/2-40;
         YPlayer = getHeight()-80;
-         Player Player = new Player(XPlayer, YPlayer,true, 15,80);
+         Player Player = new Player(XPlayer, YPlayer,15,80);
+         Player.setColor(GenerateColor(3));
         Initialize();
         while(true){            
             //Inicializando o Graphics através do buffer.
@@ -173,8 +185,6 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
            
             Player.setPosX(XPlayer);
             Player.setPosY(YPlayer);
-            
-            //g.setColor(Color.MAGENTA);
             //Desenhando a raquete na tela
             Player.desenhar(g);
             //Operações para o deslocamento do Player na Tela.
@@ -209,9 +219,10 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             }
             
             //Escrevendo o Texto "Bolas:"
+            
             g.setFont(new Font("Helvetica Neue", Font.BOLD, 14)); 
-            g.setColor(Color.black);
-            g.drawString("BOLAS: " + Integer.toString(QuantidadeBolas), getWidth()-400, getHeight()-275);
+            g.setColor(GenerateColor(1));
+            g.drawString("BOLAS: " + Integer.toString(QuantidadeBolas), getWidth()-225, getHeight()-275);
             
             //Se a Quantidade de bolas for zero, devemos reiniciar a aplicação.
             if(Bolas.size() == 0)
@@ -223,11 +234,12 @@ public class FrmPrincipal extends javax.swing.JFrame implements Runnable{
             
             //Start = false, portanto o jogo não poderá rodar, mostrando a tela de jogar novamente.
             else{
-            g.setColor(Color.ORANGE);
+           g.setColor(Color.WHITE);
             g.fillRect(0,0,getWidth(),getHeight());
             g.setFont(new Font("Helvetica Neue", Font.BOLD, 14)); 
-            g.setColor(Color.black);
+            g.setColor(GenerateColor(0));
             g.drawString("PRESSIONE ENTER PARA JOGAR NOVAMENTE!", getWidth()/2-160, getHeight()/2);
+            g.setColor(GenerateColor(2));
             g.fillRect( getWidth()/2-160, getHeight()/2 + 5, 320, 3);
             g.dispose();
             getBufferStrategy().show();
